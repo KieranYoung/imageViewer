@@ -101,6 +101,7 @@ def convert_datetime(date):
 def create_viewer(files):
     global file_index
     window = tkinter.Tk()
+    picture = None
 
     # process the interaction
     def event_action(event):
@@ -118,17 +119,21 @@ def create_viewer(files):
         file_index = max(0, file_index - 1)
         event_action(event)
 
-    def enter_key(event):
+    def space_key(event):
         global file_index
         input = simpledialog.askstring(title="Change Image", prompt="Enter image id:")
         file_index = min(len(files)-1, max(0, int(input)))
         event_action(event)
         window.after(1, lambda: window.focus_force())
 
+    def o_key(event):
+        picture.show()
+
     # set up the gui
     window.bind("<Left>", left_key)
     window.bind("<Right>", right_key)
-    window.bind("<space>", enter_key)
+    window.bind("<space>", space_key)
+    window.bind("<o>", o_key)
     # for each file, display the picture
     while True:
         _, file, date, bucko = files[file_index]
