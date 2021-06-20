@@ -134,6 +134,8 @@ def create_viewer(files):
     window.bind("<Right>", right_key)
     window.bind("<space>", space_key)
     window.bind("<o>", o_key)
+    window.bind("<Button-1>", right_key)
+    window.bind("<Button-2>", left_key)
     # for each file, display the picture
     while True:
         _, file, date, bucko = files[file_index]
@@ -196,6 +198,12 @@ def open_image(file):
     return picture, fstream
 
 
+def kevin_time(date):
+    dt = datetime.datetime.strptime(date, '%Y:%m:%d %H:%M:%S')
+    dt -= datetime.timedelta(hours=1, minutes=0)
+    return dt.strftime('%Y:%m:%d %H:%M:%S')
+
+
 def generate_order(files):
     files_tuples = []
     for index, file in enumerate(files):
@@ -214,7 +222,7 @@ def generate_order(files):
         try:
             datetime = metadata['DateTime']
         except KeyError:
-            datetime = str(metadata['Image DateTime'])
+            datetime = kevin_time(str(metadata['Image DateTime']))
         tuple = (index, file, datetime, bucko)
         print(tuple)
         files_tuples.append(tuple)
